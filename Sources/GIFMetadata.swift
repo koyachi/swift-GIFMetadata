@@ -144,20 +144,15 @@ public class GIFMetadata {
 
     func readImageDescriptor() -> ImageDescriptor {
         //print("\(#function)")
-        // - Image left(2 byte)
         let imageLeft = readBytes(2)
         pointerIndex? += 2
-        // - Image top(2 byte)
         let imageTop = readBytes(2)
         pointerIndex? += 2
-        // - Image Width(2 byte)
         let imageWidth = readBytes(2)
         pointerIndex? += 2
-        // - Image Height(2 byte)
         let imageHeight = readBytes(2)
         pointerIndex? += 2
 
-        // - Packed field(1 byte)
         let packedField = readByte()
         pointerIndex? += 1
         let localColorTableFlag = packedField & 0x80 == 0x80
@@ -166,12 +161,11 @@ public class GIFMetadata {
         // reserbed for future use, 2 bit
         let sizeOfLocalColorTable = packedField & 0x07
 
-        // TODO: 0はあとで
         return ImageDescriptor(
-            imageLeft: 0,
-            imageTop: 0,
-            imageWidth: 0,
-            imageHeight: 0,
+            imageLeft: uint16(imageLeft),
+            imageTop: uint16(imageTop),
+            imageWidth: uint16(imageWidth),
+            imageHeight: uint16(imageHeight),
             localColorTabelFlag: localColorTableFlag,
             interlaceFlag: interlaceFlag,
             sortFlag: sortFlag,
