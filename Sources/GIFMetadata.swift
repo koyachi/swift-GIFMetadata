@@ -248,7 +248,7 @@ public class GIFMetadata {
                 let bytes = readBytes(Int(blockSize))
                 // TODO animation GIF
                 if (applicationIdentifierStr == "NETSCAPE" || applicationIdentifierStr == "ANIMEXTS") {
-                    let loopCount: UInt16 = (UInt16(bytes[2]) << 8) + UInt16(bytes[1])
+                    let loopCount: UInt16 = uint16(Array(bytes[1..<3])) // TODO:
                     applicationExtensions.append(.netscapeLooping(loopCount: loopCount))
                 }
                 pointerIndex? += Int(blockSize)
@@ -258,9 +258,9 @@ public class GIFMetadata {
 
     func readCommentExtension() {
         //print("\(#function)")
-        // block size
         let blockSize = readByte()
         pointerIndex? += 1
+
         // comment data
         skipBytes(Int(blockSize))
 
