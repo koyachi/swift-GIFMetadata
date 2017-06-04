@@ -49,32 +49,32 @@ public class GIFMetadata {
 
     func readLogicalScreenDescriptor() -> LogicalScreenDescriptor {
         //print("\(#function)")
-        let offset = pointerIndex!
-        let width = data?.subdata(in: offset..<offset+2)
-        let height = data?.subdata(in: offset+2..<offset+4)
+        let width = readBytes(2)
+        pointerIndex? += 2
+        let height = readBytes(2)
+        pointerIndex? += 2
 
-        let packedField = data?.subdata(in: offset+4..<offset+5)
-        let packedFieldIntValue = [UInt8](packedField!).first!
-        let globalColorTableFlag: Bool = packedFieldIntValue & 0x80 == 0x80
-        let colorResolution: UInt8 = (packedFieldIntValue & 0x70 >> 4) & 0x07
-        let sortFlag: Bool = packedFieldIntValue & 0x08 == 0x08
-        let sizeOfGlobalColorTable = packedFieldIntValue & 0x07
+        let packedField = readByte()
+        pointerIndex? += 1
+        let globalColorTableFlag: Bool = packedField & 0x80 == 0x80
+        let colorResolution: UInt8 = (packedField & 0x70 >> 4) & 0x07
+        let sortFlag: Bool = packedField & 0x08 == 0x08
+        let sizeOfGlobalColorTable = packedField & 0x07
 
-        let backgroundColorIndex = data?.subdata(in: offset+5..<offset+6)
-        let pixelAspectRatio = data?.subdata(in: offset+6..<offset+7)
+        let backgroundColorIndex = readByte()
+        pointerIndex? += 1
+        let pixelAspectRatio = readByte()
+        pointerIndex? += 1
 
-        pointerIndex? += 7
-
-        // 0はあとで
         return LogicalScreenDescriptor(
-            width: 0,
-            height: 0,
+            width: uint16(width),
+            height: uint16(height),
             globalColorTableFlag: globalColorTableFlag,
             colorResolution: colorResolution,
             sortFlag: sortFlag,
             sizeOfGlobalColorTable: sizeOfGlobalColorTable,
-            backgroundColorIndex: 0,
-            pixelAspectRatio: 0)
+            backgroundColorIndex: backgroundColorIndex,
+            pixelAspectRatio: pixelAspectRatio)
     }
 
     func readGlobalColorTable() {
@@ -308,6 +308,11 @@ public class GIFMetadata {
         let byte = data?.subdata(in: pointerIndex!..<pointerIndex!+1)
         let byteValue = [UInt8](byte!).first!
         return byteValue
+    }
+
+    func uint16(_ bytes: [UInt8]) -> UInt16 {
+        let result: UInt16 = (UInt16(bytes[1]) << 8) + UInt16(bytes[0])
+        return result
     }
 }
 
