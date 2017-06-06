@@ -4,7 +4,7 @@
 
 import Foundation
 
-public class GIFMetadata {
+@objc public class GIFMetadata: NSObject {
 
     public var logicalScreenDescriptor: LogicalScreenDescriptor?
     public var applicationExtensions: [ApplicationExtension] = []
@@ -34,6 +34,7 @@ public class GIFMetadata {
     }
 
     public init(_ data: Data) {
+        super.init()
         self.data = data
         pointerIndex = 0
         readHeader()
@@ -310,9 +311,9 @@ public class GIFMetadata {
     }
 }
 
-extension GIFMetadata: CustomStringConvertible {
+extension GIFMetadata /*: CustomStringConvertible*/ {
 
-    public var description: String {
+    override public var description: String {
         return [
             "<\(String(describing: type(of: self)))",
             "logicalScreenDescriptor: \(logicalScreenDescriptor)",
