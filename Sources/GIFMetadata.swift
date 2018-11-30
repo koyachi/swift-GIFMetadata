@@ -184,7 +184,7 @@ import Foundation
     }
     func readImageData(){
         //print("\(#function)")
-        let LZWMinimumCodeSize = readByte()
+        let _ = readByte() // LZWMinimumCodeSize
         pointerIndex? += 1
         while true {
             let byte = readByte()
@@ -241,7 +241,7 @@ import Foundation
         let applicationIdentifier = readBytes(8)
         let applicationIdentifierStr = String(bytes: applicationIdentifier, encoding: .utf8)
         pointerIndex? += 8
-        let applicationAuthenticationCode = readBytes(3)
+        let _ = readBytes(3) // applicationAuthenticationCode
         pointerIndex? += 3
 
         while true {
@@ -321,7 +321,7 @@ extension GIFMetadata /*: CustomStringConvertible*/ {
     override public var description: String {
         return [
             "<\(String(describing: type(of: self)))",
-            "logicalScreenDescriptor: \(logicalScreenDescriptor)",
+            "logicalScreenDescriptor: \(logicalScreenDescriptor as Optional)",
             "applicationExtensions: \(applicationExtensions)",
             "imageDescriptors: \(imageDescriptors)",
             "imageDataCount: \(imageDataCount)",
