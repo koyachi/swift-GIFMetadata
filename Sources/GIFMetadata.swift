@@ -37,6 +37,11 @@ import Foundation
         super.init()
         self.data = data
         pointerIndex = 0
+
+        if data.count == 0 {
+            return
+        }
+
         readHeader()
         logicalScreenDescriptor = readLogicalScreenDescriptor()
         readGlobalColorTable()
