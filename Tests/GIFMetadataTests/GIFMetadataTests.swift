@@ -47,6 +47,16 @@ class GIFMetadataTests: XCTestCase {
         }
     }
 
+    func testNilData() {
+        let nilGifData = Data(bytes: [])
+        let metadata = GIFMetadata(nilGifData)
+        //print("metadata = \(metadata)")
+        let expected = 0
+        let result = metadata.preferredLoopCount()
+        //print("result: \(result), expected: \(expected)")
+        XCTAssertEqual(result, expected, "nilGifData's preferredLoopCount() == \(result), expected == \(expected)")
+    }
+
     static var allTests = [
         ("testBasic", testBasic),
         ("testPreferedLoopCount", testPreferedLoopCount),
