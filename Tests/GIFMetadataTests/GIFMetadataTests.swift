@@ -48,7 +48,7 @@ class GIFMetadataTests: XCTestCase {
     }
 
     func testNilData() {
-        let nilGifData = Data(bytes: [])
+        let nilGifData = Data(_: [])
         let metadata = GIFMetadata(nilGifData)
         //print("metadata = \(metadata)")
         let expected = 0
