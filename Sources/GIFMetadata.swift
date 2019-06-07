@@ -19,7 +19,7 @@ import Foundation
      }*/
     private var globalColorTableSize: Int?
 
-    public func preferredLoopCount() -> Int {
+    @objc public func preferredLoopCount() -> Int {
         if applicationExtensions.count == 0 && imageDescriptors.count > 0 {
             return 1
         } else {
@@ -33,7 +33,7 @@ import Foundation
         return 0
     }
 
-    public init(_ data: Data) {
+    @objc public init(_ data: Data) {
         super.init()
         self.data = data
         pointerIndex = 0
